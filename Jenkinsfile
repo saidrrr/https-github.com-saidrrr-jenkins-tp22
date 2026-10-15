@@ -7,7 +7,24 @@ pipeline {
         booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Exécuter les tests ?')
     }
 
-            stage('Tests') {
+    stages {
+        stage('Informations') {
+            steps {
+                echo "Version : ${params.APP_VERSION}"
+                echo "Environnement : ${params.ENVIRONNEMENT}"
+                echo "Tests activés : ${params.RUN_TESTS}"
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh '''
+                    mkdir -p build
+                    echo "app ${APP_VERSION}" > build/app.txt
+                '''
+            }
+        }
+                stage('Tests') {
             when {
                 expression { params.RUN_TESTS }
             }
@@ -37,4 +54,5 @@ pipeline {
                 echo 'Déploiement en production...'
             }
         }
+    }
 }
