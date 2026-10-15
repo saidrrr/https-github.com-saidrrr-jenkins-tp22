@@ -1,5 +1,11 @@
 pipeline {
     agent any
+        options {
+        timeout(time: 5, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        disableConcurrentBuilds()
+        timestamps()
+    }
 
     parameters {
         string(name: 'APP_VERSION', defaultValue: '1.0.0', description: 'Version à construire')
